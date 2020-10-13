@@ -1,11 +1,23 @@
 <?php namespace Zizaco\Confide;
 
 //use Illuminate\Auth\UserInterface;
+use Illuminate\Auth\Authenticatable;
+use Illuminate\Auth\MustVerifyEmail;
+use Illuminate\Auth\Passwords\CanResetPassword;
+use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Illuminate\Foundation\Auth\Access\Authorizable;
 use LaravelArdent\Ardent\Ardent;
 //use J20\Uuid\Uuid;
 
-class ConfideUser extends Ardent //implements UserInterface
+class ConfideUser extends Ardent implements
+    AuthenticatableContract,
+    //AuthorizableContract,
+    CanResetPasswordContract
 {
+
+    use Authenticatable, /*Authorizable,*/ CanResetPassword, MustVerifyEmail;
 
     /**
      * The database table used by the model.

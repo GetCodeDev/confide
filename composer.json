@@ -27,9 +27,6 @@
         "illuminate/database": "~4.1|^7"
     },
     "autoload": {
-        "classmap": [
-            "src/commands"
-        ],
         "psr-4": {
             "Zizaco\\Confide\\": "src/Zizaco/Confide/"
         }
