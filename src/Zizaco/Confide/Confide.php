@@ -1,6 +1,6 @@
 <?php namespace Zizaco\Confide;
 
-use Illuminate\View\Environment;
+//use Illuminate\View\Environment;
 use Illuminate\Config\Repository;
 use InvalidArgumentException;
 use Zizaco\Confide\ObjectProvider;
@@ -134,7 +134,7 @@ class Confide
         $attempt_key = $this->attemptCacheKey( $credentials );
         $attempts = $this->app['cache']->get($attempt_key, 0);
 
-        if( $attempts >= $this->app['config']->get('confide::throttle_limit') )
+        if( $attempts >= $this->app['config']->get('confide.throttle_limit') )
         {
             return true;
         }
@@ -226,7 +226,7 @@ class Confide
      */
     public function makeLoginForm()
     {
-        return $this->app['view']->make($this->app['config']->get('confide::login_form'));
+        return $this->app['view']->make($this->app['config']->get('confide.login_form'));
     }
 
     /**
@@ -237,7 +237,7 @@ class Confide
      */
     public function makeSignupForm()
     {
-        return $this->app['view']->make( $this->app['config']->get('confide::signup_form') );
+        return $this->app['view']->make( $this->app['config']->get('confide.signup_form') );
     }
 
     /**
@@ -248,7 +248,7 @@ class Confide
      */
     public function makeForgotPasswordForm()
     {
-        return $this->app['view']->make( $this->app['config']->get('confide::forgot_password_form') );
+        return $this->app['view']->make( $this->app['config']->get('confide.forgot_password_form') );
     }
 
     /**
@@ -259,7 +259,7 @@ class Confide
      */
     public function makeResetPasswordForm( $token )
     {
-        return $this->app['view']->make( $this->app['config']->get('confide::reset_password_form') , array('token'=>$token));
+        return $this->app['view']->make( $this->app['config']->get('confide.reset_password_form') , array('token'=>$token));
     }
 
     /**
@@ -290,7 +290,7 @@ class Confide
     {
         return 'confide_flogin_attempt_'
             .$this->app['request']->server('REMOTE_ADDR')
-            .$credentials[$this->app['config']->get('confide::login_cache_field')];
+            .$credentials[$this->app['config']->get('confide.login_cache_field')];
     }
 
     /**
@@ -305,7 +305,7 @@ class Confide
         $attempt_key = $this->attemptCacheKey( $credentials );
         $attempts = $this->app['cache']->get($attempt_key, 0);
 
-        return $attempts >= $this->app['config']->get('confide::throttle_limit');
+        return $attempts >= $this->app['config']->get('confide.throttle_limit');
     }
 
     /**
@@ -319,6 +319,6 @@ class Confide
         $attempt_key = $this->attemptCacheKey( $credentials );
         $attempts = $this->app['cache']->get($attempt_key, 0);
 
-        $this->app['cache']->put($attempt_key, $attempts+1, $this->app['config']->get('confide::throttle_time_period')); // used throttling login attempts
+        $this->app['cache']->put($attempt_key, $attempts+1, $this->app['config']->get('confide.throttle_time_period')); // used throttling login attempts
     }
 }

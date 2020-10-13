@@ -26,12 +26,8 @@
         "illuminate/auth": "~4.1|^7",
         "illuminate/database": "~4.1|^7"
     },
-    "suggest": {
-        "zizaco/entrust":"add Role-based Permissions to Laravel 4"
-    },
     "autoload": {
         "classmap": [
-            "src/migrations",
             "src/commands"
         ],
         "psr-4": {

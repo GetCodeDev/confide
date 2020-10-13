@@ -27,29 +27,29 @@ class {{ $name }} extends BaseController {
      */
     public function {{ (! $restful) ? 'store' : 'postIndex' }}()
     {
-        ${{ lcfirst(Config::get('auth.model')) }} = new {{ Config::get('auth.model') }};
+        ${{ lcfirst(Config::get('auth.providers.users.model')) }} = new {{ Config::get('auth.providers.users.model') }};
 
-        ${{ lcfirst(Config::get('auth.model')) }}->username = Input::get( 'username' );
-        ${{ lcfirst(Config::get('auth.model')) }}->email = Input::get( 'email' );
-        ${{ lcfirst(Config::get('auth.model')) }}->password = Input::get( 'password' );
+        ${{ lcfirst(Config::get('auth.providers.users.model')) }}->username = request( 'username' );
+        ${{ lcfirst(Config::get('auth.providers.users.model')) }}->email = request( 'email' );
+        ${{ lcfirst(Config::get('auth.providers.users.model')) }}->password = request( 'password' );
 
         // The password confirmation will be removed from model
         // before saving. This field will be used in Ardent's
         // auto validation.
-        ${{ lcfirst(Config::get('auth.model')) }}->password_confirmation = Input::get( 'password_confirmation' );
+        ${{ lcfirst(Config::get('auth.providers.users.model')) }}->password_confirmation = request( 'password_confirmation' );
 
         // Save if valid. Password field will be hashed before save
-        ${{ lcfirst(Config::get('auth.model')) }}->save();
+        ${{ lcfirst(Config::get('auth.providers.users.model')) }}->save();
 
-        if ( ${{ lcfirst(Config::get('auth.model')) }}->getKey() )
+        if ( ${{ lcfirst(Config::get('auth.providers.users.model')) }}->getKey() )
         {
             @if ( Config::get('confide::signup_confirm') && Config::get('confide::signup_email'))
-            $notice = Lang::get('confide::confide.alerts.account_created') . ' ' . Lang::get('confide::confide.alerts.instructions_sent');
+            $notice = __('confide::confide.alerts.account_created') . ' ' . __('confide::confide.alerts.instructions_sent');
             @else
-            $notice = Lang::get('confide::confide.alerts.account_created');
+            $notice = __('confide::confide.alerts.account_created');
             @endif
 
-            // Redirect with success message, You may replace "Lang::get(..." for your custom message.
+            // Redirect with success message, You may replace "__(..." for your custom message.
             @if (! $restful)
             return Redirect::action('{{ $name }}@login')
             @else
@@ -60,14 +60,14 @@ class {{ $name }} extends BaseController {
         else
         {
             // Get validation errors (see Ardent package)
-            $error = ${{ lcfirst(Config::get('auth.model')) }}->errors()->all(':message');
+            $error = ${{ lcfirst(Config::get('auth.providers.users.model')) }}->errors()->all(':message');
 
             @if (! $restful)
             return Redirect::action('{{ $name }}@create')
             @else
             return Redirect::to('user/create')
             @endif
-                ->withInput(Input::except('password'))
+                ->withInput(request()->except('password'))
                 ->with( 'error', $error );
         }
     }
@@ -97,10 +97,10 @@ class {{ $name }} extends BaseController {
     public function {{ (! $restful) ? 'do_login' : 'postLogin' }}()
     {
         $input = array(
-            'email'    => Input::get( 'email' ), // May be the username too
-            'username' => Input::get( 'email' ), // so we have to pass both
-            'password' => Input::get( 'password' ),
-            'remember' => Input::get( 'remember' ),
+            'email'    => request( 'email' ), // May be the username too
+            'username' => request( 'email' ), // so we have to pass both
+            'password' => request( 'password' ),
+            'remember' => request( 'remember' ),
         );
 
         // If you wish to only allow login from confirmed users, call logAttempt
@@ -117,20 +117,20 @@ class {{ $name }} extends BaseController {
         }
         else
         {
-            ${{ lcfirst(Config::get('auth.model')) }} = new {{ Config::get('auth.model') }};
+            ${{ lcfirst(Config::get('auth.providers.users.model')) }} = new {{ Config::get('auth.providers.users.model') }};
 
             // Check if there was too many login attempts
             if( Confide::isThrottled( $input ) )
             {
-                $err_msg = Lang::get('confide::confide.alerts.too_many_attempts');
+                $err_msg = __('confide::confide.alerts.too_many_attempts');
             }
-            elseif( ${{ lcfirst(Config::get('auth.model')) }}->checkUserExists( $input ) and ! ${{ lcfirst(Config::get('auth.model')) }}->isConfirmed( $input ) )
+            elseif( ${{ lcfirst(Config::get('auth.providers.users.model')) }}->checkUserExists( $input ) and ! ${{ lcfirst(Config::get('auth.providers.users.model')) }}->isConfirmed( $input ) )
             {
-                $err_msg = Lang::get('confide::confide.alerts.not_confirmed');
+                $err_msg = __('confide::confide.alerts.not_confirmed');
             }
             else
             {
-                $err_msg = Lang::get('confide::confide.alerts.wrong_credentials');
+                $err_msg = __('confide::confide.alerts.wrong_credentials');
             }
 
             @if (! $restful)
@@ -138,7 +138,7 @@ class {{ $name }} extends BaseController {
             @else
             return Redirect::to('user/login')
             @endif
-                ->withInput(Input::except('password'))
+                ->withInput(request()->except('password'))
                 ->with( 'error', $err_msg );
         }
     }
@@ -152,7 +152,7 @@ class {{ $name }} extends BaseController {
     {
         if ( Confide::confirm( $code ) )
         {
-            $notice_msg = Lang::get('confide::confide.alerts.confirmation');
+            $notice_msg = __('confide::confide.alerts.confirmation');
             @if (! $restful)
             return Redirect::action('{{ $name }}@login')
             @else
@@ -162,7 +162,7 @@ class {{ $name }} extends BaseController {
         }
         else
         {
-            $error_msg = Lang::get('confide::confide.alerts.wrong_confirmation');
+            $error_msg = __('confide::confide.alerts.wrong_confirmation');
             @if (! $restful)
             return Redirect::action('{{ $name }}@login')
             @else
@@ -187,9 +187,9 @@ class {{ $name }} extends BaseController {
      */
     public function {{ (! $restful) ? 'do_forgot_password' : 'postForgot' }}()
     {
-        if( Confide::forgotPassword( Input::get( 'email' ) ) )
+        if( Confide::forgotPassword( request( 'email' ) ) )
         {
-            $notice_msg = Lang::get('confide::confide.alerts.password_forgot');
+            $notice_msg = __('confide::confide.alerts.password_forgot');
             @if (! $restful)
             return Redirect::action('{{ $name }}@login')
             @else
@@ -199,7 +199,7 @@ class {{ $name }} extends BaseController {
         }
         else
         {
-            $error_msg = Lang::get('confide::confide.alerts.wrong_password_forgot');
+            $error_msg = __('confide::confide.alerts.wrong_password_forgot');
             @if (! $restful)
             return Redirect::action('{{ $name }}@forgot_password')
             @else
@@ -227,15 +227,15 @@ class {{ $name }} extends BaseController {
     public function {{ (! $restful) ? 'do_reset_password' : 'postReset' }}()
     {
         $input = array(
-            'token'=>Input::get( 'token' ),
-            'password'=>Input::get( 'password' ),
-            'password_confirmation'=>Input::get( 'password_confirmation' ),
+            'token'=>request( 'token' ),
+            'password'=>request( 'password' ),
+            'password_confirmation'=>request( 'password_confirmation' ),
         );
 
         // By passing an array with the token, password and confirmation
         if( Confide::resetPassword( $input ) )
         {
-            $notice_msg = Lang::get('confide::confide.alerts.password_reset');
+            $notice_msg = __('confide::confide.alerts.password_reset');
             @if (! $restful)
             return Redirect::action('{{ $name }}@login')
             @else
@@ -245,7 +245,7 @@ class {{ $name }} extends BaseController {
         }
         else
         {
-            $error_msg = Lang::get('confide::confide.alerts.wrong_password_reset');
+            $error_msg = __('confide::confide.alerts.wrong_password_reset');
             @if (! $restful)
             return Redirect::action('{{ $name }}@reset_password', array('token'=>$input['token']))
             @else

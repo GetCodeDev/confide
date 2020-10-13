@@ -1,6 +1,9 @@
 <?php namespace Zizaco\Confide;
 
 use Illuminate\Support\ServiceProvider;
+use Zizaco\Confide\Commands\ControllerCommand;
+use Zizaco\Confide\Commands\MigrationCommand;
+use Zizaco\Confide\Commands\RoutesCommand;
 
 class ConfideServiceProvider extends ServiceProvider {
 
@@ -16,8 +19,10 @@ class ConfideServiceProvider extends ServiceProvider {
         $this->loadViewsFrom(__DIR__.'/../../views', 'confide');
 
         $this->publishes([
-            __DIR__.'/../../config/config.php' => config_path('confide.php'),
+            __DIR__.'/../../config/confide.php' => config_path('confide.php'),
         ]);
+
+        $this->loadTranslationsFrom(__DIR__.'/../../lang', 'confide');
     }
 
     /**
@@ -28,7 +33,7 @@ class ConfideServiceProvider extends ServiceProvider {
     public function register()
     {
         $this->mergeConfigFrom(
-            __DIR__.'/../../config/config.php', 'confide'
+            __DIR__.'/../../config/confide.php', 'confide'
         );
 
         $this->registerRepository();
@@ -71,26 +76,12 @@ class ConfideServiceProvider extends ServiceProvider {
      */
     protected function registerCommands()
     {
-        $this->app['command.confide.controller'] = $this->app->share(function($app)
-        {
-            return new ControllerCommand($app);
-        });
 
-        $this->app['command.confide.routes'] = $this->app->share(function($app)
-        {
-            return new RoutesCommand($app);
-        });
-
-        $this->app['command.confide.migration'] = $this->app->share(function($app)
-        {
-            return new MigrationCommand($app);
-        });
-
-        $this->commands(
-            'command.confide.controller',
-            'command.confide.routes',
-            'command.confide.migration'
-        );
+        /*$this->commands([
+            ControllerCommand::class,
+            RoutesCommand::class,
+            MigrationCommand::class
+        ]);*/
     }
 
 }

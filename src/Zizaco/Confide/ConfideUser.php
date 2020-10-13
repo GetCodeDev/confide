@@ -116,7 +116,7 @@ class ConfideUser extends Ardent //implements UserInterface
         $token = static::$app['confide.repository']
             ->forgotPassword( $this );
 
-        $view = static::$app['config']->get('confide::email_reset_password');
+        $view = static::$app['config']->get('confide.email_reset_password');
 
         $this->sendEmail( 'confide::confide.email.password_reset.subject', $view, array('user'=>$this, 'token'=>$token) );
 
@@ -278,13 +278,13 @@ class ConfideUser extends Ardent //implements UserInterface
         if (! $this->confirmed && ! static::$app['cache']->get('confirmation_email_'.$this->getKey()) )
         {
             // on behalf or the config file we should send and email or not
-            if (static::$app['config']->get('confide::signup_email') == true)
+            if (static::$app['config']->get('confide.signup_email') == true)
             {
-                $view = static::$app['config']->get('confide::email_account_confirmation');
+                $view = static::$app['config']->get('confide.email_account_confirmation');
                 $this->sendEmail( 'confide::confide.email.account_confirmation.subject', $view, array('user' => $this) );
             }
             // Save in cache that the email has been sent.
-            $signup_cache = (int)static::$app['config']->get('confide::signup_cache');
+            $signup_cache = (int)static::$app['config']->get('confide.signup_cache');
             if ($signup_cache !== 0)
             {
                 static::$app['cache']->put('confirmation_email_'.$this->getKey(), true, $signup_cache);

@@ -1,4 +1,4 @@
-<?php namespace Zizaco\Confide;
+<?php namespace Zizaco\Confide\Commands;
 
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
@@ -37,7 +37,7 @@ class RoutesCommand extends Command {
      *
      * @return void
      */
-    public function fire()
+    public function handle()
     {
         $name = $this->prepareName($this->option('controller'));
         $restful = $this->option('restful');
@@ -92,7 +92,7 @@ class RoutesCommand extends Command {
         $app = app();
 
         return array(
-            array('controller', null, InputOption::VALUE_OPTIONAL, 'Name of the controller.', $app['config']->get('auth.model')),
+            array('controller', null, InputOption::VALUE_OPTIONAL, 'Name of the controller.', $app['config']->get('auth.providers.users.model')),
             array('--restful', '-r', InputOption::VALUE_NONE, 'Generate RESTful controller.'),
         );
     }

@@ -1,6 +1,6 @@
 <?php
 
-return array(
+return [
 
     /*
     |--------------------------------------------------------------------------
@@ -12,7 +12,7 @@ return array(
     |
     */
 
-    'throttle_limit' => 9,
+    'throttle_limit'       => 9,
     'throttle_time_period' => 2,
 
     /*
@@ -26,7 +26,7 @@ return array(
     | Default: email
     |
     */
-    'login_cache_field' => 'email',
+    'login_cache_field'    => 'email',
 
     /*
     |--------------------------------------------------------------------------
@@ -47,10 +47,10 @@ return array(
     |
     |
     */
-    'login_form' =>             'confide::login',
-    'signup_form' =>            'confide::signup',
-    'forgot_password_form' =>   'confide::forgot_password',
-    'reset_password_form' =>    'confide::reset_password',
+    'login_form'           => 'confide::login',
+    'signup_form'          => 'confide::signup',
+    'forgot_password_form' => 'confide::forgot_password',
+    'reset_password_form'  => 'confide::reset_password',
 
     /*
     |--------------------------------------------------------------------------
@@ -70,7 +70,7 @@ return array(
     |
     */
 
-    'email_reset_password' =>       'confide::emails.passwordreset', // with $user and $token.
+    'email_reset_password'       => 'confide::emails.passwordreset', // with $user and $token.
     'email_account_confirmation' => 'confide::emails.confirm', // with $user
 
     /*
@@ -87,7 +87,7 @@ return array(
     |
     |
     */
-    'signup_cache' => 120,
+    'signup_cache'               => 120,
 
     /*
     |--------------------------------------------------------------------------
@@ -111,7 +111,7 @@ return array(
     | table, otherwise they will not be able to login after the payment.
     |
     */
-    'signup_email'      => true,
-    'signup_confirm'    => true,
+    'signup_email'               => true,
+    'signup_confirm'             => true,
 
-);
+];

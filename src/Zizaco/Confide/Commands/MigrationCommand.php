@@ -1,4 +1,4 @@
-<?php namespace Zizaco\Confide;
+<?php namespace Zizaco\Confide\Commands;
 
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
@@ -37,7 +37,7 @@ class MigrationCommand extends Command {
      *
      * @return void
      */
-    public function fire()
+    public function handle()
     {
         $table = lcfirst($this->option('table'));
 

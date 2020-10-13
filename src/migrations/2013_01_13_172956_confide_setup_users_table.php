@@ -12,7 +12,7 @@ class ConfideSetupUsersTable extends Migration {
 	public function up()
 	{
 		// Creates the users table
-		Schema::create('users', function($table)
+		/*Schema::table('users', function($table)
 		{
 		    $table->increments('id');
 		    $table->string('username');
@@ -22,7 +22,7 @@ class ConfideSetupUsersTable extends Migration {
 		    $table->boolean('confirmed')->default(false);
 		    $table->string('remember_token')->nullable();
 		    $table->timestamps();
-		});
+		});*/
 	}
 
 	/**

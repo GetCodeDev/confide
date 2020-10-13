@@ -35,13 +35,13 @@ class ConfideEloquentRepository implements ConfideRepository
     /**
      * Returns the model set in auth config
      *
-     * @return mixed Instantiated object of the 'auth.model' class
+     * @return mixed Instantiated object of the 'auth.providers.users.model' class
      */
     public function model()
     {
         if (! $this->model)
         {
-            $this->model = $this->app['config']->get('auth.model');
+            $this->model = $this->app['config']->get('auth.providers.users.model');
         }
 
         if(is_object($this->model))
