@@ -11,6 +11,7 @@ return array(
     | the 'throttle_time_period', which is in minutes.
     |
     */
+
     'throttle_limit' => 9,
     'throttle_time_period' => 2,
 
@@ -68,20 +69,25 @@ return array(
     |
     |
     */
+
     'email_reset_password' =>       'confide::emails.passwordreset', // with $user and $token.
     'email_account_confirmation' => 'confide::emails.confirm', // with $user
 
     /*
     |--------------------------------------------------------------------------
-    | Password reset expiration
+    | Signup (create) Cache
     |--------------------------------------------------------------------------
     |
-    | By default. A password reset request will expire after 7 hours. With the
-    | line below you will be able to customize the duration of the reset
-    | requests here.
+    | By default you will only can only register once every 2 hours
+    | (120 minutes) because you are not able to receive a registration
+    | email more often then that.
+    |
+    | You can adjust that limitation here, set to 0 for no caching.
+    | Time is in minutes.
+    |
     |
     */
-    'password_reset_expiration' => 7, // hours
+    'signup_cache' => 120,
 
     /*
     |--------------------------------------------------------------------------
@@ -91,7 +97,7 @@ return array(
     | By default a signup e-mail will be send by the system, however if you
     | do not want this to happen, change the line below in false and handle
     | the confirmation using another technique, for example by using the IPN
-    | from a payment-processor. Very useful for websites offering products.
+    | from a payment-processor. Very usefull for websites offering products.
     |
     | signup_email:
     | is for the transport of the email, true or false
@@ -105,25 +111,7 @@ return array(
     | table, otherwise they will not be able to login after the payment.
     |
     */
-    'signup_email'   => true,
-    'signup_confirm' => true,
-
-    /*
-    |--------------------------------------------------------------------------
-    | E-Mail queue
-    |--------------------------------------------------------------------------
-    |
-    | Modify the line below to change to which queue Confide will push the
-    | email send job.
-    | See: http://laravel.com/docs/queues#running-the-queue-listener
-    | Confide will use the default queue driver (app/config/queue.php)
-    |
-    | Warning: This is not the driver that will be used, but to which queue/tube
-    | inside the queue driver the job will be placed. For example:
-    | By using 'email_queue' => 'emails', with the driver 'beanstalkd' in the
-    | You will have to run `php artisan queue:listen --queue=emails`
-    |
-    */
-    'email_queue' => 'default',
+    'signup_email'      => true,
+    'signup_confirm'    => true,
 
 );
