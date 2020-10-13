@@ -1,10 +1,11 @@
 <?php namespace Zizaco\Confide;
 
-use Illuminate\Auth\UserInterface;
-use LaravelBook\Ardent\Ardent;
-use J20\Uuid\Uuid;
+//use Illuminate\Auth\UserInterface;
+use LaravelArdent\Ardent\Ardent;
+//use J20\Uuid\Uuid;
 
-class ConfideUser extends Ardent implements UserInterface {
+class ConfideUser extends Ardent //implements UserInterface
+{
 
     /**
      * The database table used by the model.

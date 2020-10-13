@@ -5,20 +5,19 @@ use Illuminate\Support\ServiceProvider;
 class ConfideServiceProvider extends ServiceProvider {
 
     /**
-     * Indicates if loading of the provider is deferred.
-     *
-     * @var bool
-     */
-    protected $defer = false;
-
-    /**
      * Bootstrap the service provider.
      *
      * @return void
      */
     public function boot()
     {
-        $this->package('zizaco/confide');
+        $this->loadMigrationsFrom(__DIR__.'/../../migrations');
+
+        $this->loadViewsFrom(__DIR__.'/../../views', 'confide');
+
+        $this->publishes([
+            __DIR__.'/../../config/config.php' => config_path('confide.php'),
+        ]);
     }
 
     /**
@@ -28,6 +27,10 @@ class ConfideServiceProvider extends ServiceProvider {
      */
     public function register()
     {
+        $this->mergeConfigFrom(
+            __DIR__.'/../../config/config.php', 'confide'
+        );
+
         $this->registerRepository();
 
         $this->registerConfide();
