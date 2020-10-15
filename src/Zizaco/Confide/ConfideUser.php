@@ -8,6 +8,7 @@ use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Foundation\Auth\Access\Authorizable;
+use Illuminate\Support\Facades\App;
 use LaravelArdent\Ardent\Ardent;
 //use J20\Uuid\Uuid;
 
@@ -367,7 +368,7 @@ class ConfideUser extends Ardent implements
      */
     protected function sendEmail( $subject_translation, $view_name, $params = array() )
     {
-        if ( static::$app['config']->getEnvironment() == 'testing' )
+        if ( App::environment('testing') )
             return;
 
         static::fixViewHint();
